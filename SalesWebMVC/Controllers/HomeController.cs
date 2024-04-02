@@ -1,14 +1,10 @@
 using Microsoft.AspNetCore.Mvc;
-using SalesWebMVC.Models;
+using SalesWebMVC.Models.ViewModels;
 using System.Diagnostics;
 
 namespace SalesWebMVC.Controllers {
-    public class HomeController : Controller {
-        private readonly ILogger<HomeController> _logger;
-
-        public HomeController(ILogger<HomeController> logger) {
-            _logger = logger;
-        }
+    public class HomeController(ILogger<HomeController> logger) : Controller {
+        private readonly ILogger<HomeController> _logger = logger;
 
         public IActionResult Index() {
             return View();
