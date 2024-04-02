@@ -14,6 +14,11 @@ namespace SalesWebMVC.Controllers {
             return View();
         }
 
+        public IActionResult About() {
+            ViewData["Professor"] = "Nelio Alves";
+            return View();
+        }
+
         public IActionResult Privacy() {
             return View();
         }
