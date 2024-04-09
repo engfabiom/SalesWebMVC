@@ -2,11 +2,9 @@
 using SalesWebMVC.Models.Enums;
 
 namespace SalesWebMVC.Data {
-    public class ServiceSeeding {
-        private SalesWebMVCContext _context;
-        public ServiceSeeding(SalesWebMVCContext context) {
-            _context = context;
-        }
+    public class ServiceSeeding(SalesWebMVCContext context) {
+        private SalesWebMVCContext _context = context;
+
         public void Seed() {
             _context.Database.EnsureCreated();
 

@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SalesWebMVC.Data;
+using SalesWebMVC.Services;
 namespace SalesWebMVC {
     public class Program {
         public static void Main(string[] args) {
@@ -13,6 +14,7 @@ namespace SalesWebMVC {
                     b => b.MigrationsAssembly("SalesWebMVC"))
                 );
             builder.Services.AddScoped<ServiceSeeding>();
+            builder.Services.AddScoped<ServiceSeller>();
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
