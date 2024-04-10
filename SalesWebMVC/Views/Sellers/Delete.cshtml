@@ -1,0 +1,29 @@
+﻿@using System.Globalization
+@model SalesWebMVC.Models.Seller;
+@{
+    ViewData["Title"] = this.ViewContext.RouteData.Values["action"].ToString();
+}
+
+<h1>@ViewData["Title"]</h1>
+<h4>Seller</h4>
+<hr />
+<h3> Please confirm the deletion of</h3>
+
+<div>
+    <dl class="list-group-horizontal">
+        <dt>@Html.DisplayNameFor(model => model.Name)</dt>
+        <dd>@Model.Name</dd>
+        <dt>@Html.DisplayNameFor(model => model.Email)</dt>
+        <dd>@Model.Email</dd>
+        <dt>@Html.DisplayNameFor(model => model.BirthDate)</dt>
+        <dd>@Model.BirthDate.ToShortDateString()</dd>
+        <dt>@Html.DisplayNameFor(model => model.BaseSalary)</dt>
+        <dd>@Model.BaseSalary.ToString("N2",CultureInfo.CurrentCulture)</dd>
+    </dl>
+
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="Id" />
+        <input type="submit" value="Delete" class="btn btn-danger"/>
+        <a asp-action="Index">Back to list</a>
+    </form>
+</div>
