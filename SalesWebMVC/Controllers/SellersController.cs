@@ -16,12 +16,13 @@ namespace SalesWebMVC.Controllers {
 
         public IActionResult Create() {
             List<Department> departments = _departmentService.FindAll();
-            SellerFormViewModel viewModel = new SellerFormViewModel { Departments = departments };
+            SellerFormViewModel viewModel = new() { Departments = departments };
             return View(viewModel);
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Create(Seller seller) {
+            if (!ModelState.IsValid) return View(new SellerFormViewModel { Seller = seller, Departments = _departmentService.FindAll() });
             _sellerService.Insert(seller);
             return RedirectToAction(nameof(Index));
         }
@@ -51,13 +52,14 @@ namespace SalesWebMVC.Controllers {
             Seller seller = _sellerService.FindById(id.Value);
             if (seller == null) return RedirectToAction(nameof(Error), new { message = "Seller Id not found." });
             List<Department> departments = _departmentService.FindAll();
-            SellerFormViewModel viewModel = new SellerFormViewModel { Departments = departments, Seller = seller };
+            SellerFormViewModel viewModel = new() { Departments = departments, Seller = seller };
             return View(viewModel);
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Edit(int id, Seller seller) {
             if (id != seller.Id) return RedirectToAction(nameof(Error), new { message = "Seller Id mismatch." });
+            if (!ModelState.IsValid) return View(new SellerFormViewModel { Seller = seller, Departments = _departmentService.FindAll() });
             try {
                 _sellerService.Update(seller);
                 return RedirectToAction(nameof(Index));
@@ -68,7 +70,7 @@ namespace SalesWebMVC.Controllers {
         }
 
         public IActionResult Error(string message) {
-            ErrorViewModel errorViewModel = new ErrorViewModel {
+            ErrorViewModel errorViewModel = new() {
                 Message = message,
                 RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier
             };
