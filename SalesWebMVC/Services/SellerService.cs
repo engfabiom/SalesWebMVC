@@ -6,30 +6,31 @@ using SalesWebMVC.Services.Exceptions;
 namespace SalesWebMVC.Services {
     public class SellerService(SalesWebMVCContext context) {
         private readonly SalesWebMVCContext _context = context;
-        public List<Seller> FindAll() {
-            return _context.Seller.ToList();
+        public async Task<List<Seller>> FindAllAsync() {
+            return await _context.Seller.ToListAsync();
         }
 
-        public void Insert(Seller newSeller) {
-            _context.Add(newSeller);
-            _context.SaveChanges();
+        public async Task InsertAsync(Seller newSeller) {
+            await _context.AddAsync(newSeller);
+            await _context.SaveChangesAsync();
         }
 
-        public Seller FindById(int id) {
-            return _context.Seller.Include(d => d.Department).FirstOrDefault(s => s.Id == id);
+        public async Task<Seller> FindByIdAsync(int id) {
+            return await _context.Seller.Include(d => d.Department).FirstOrDefaultAsync(s => s.Id == id);
         }
 
-        public void Remove(int id) {
-            var seller = FindById(id);
+        public async Task RemoveAsync(int id) {
+            var seller = await FindByIdAsync(id);
             _context.Seller.Remove(seller);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
 
-        public void Update(Seller seller) {
-            if (!_context.Seller.Any(s => s.Id == seller.Id)) throw new NotFoundException("Seller ID not found.");
+        public async Task UpdateAsync(Seller seller) {
+            bool hasAny = await _context.Seller.AnyAsync(s => s.Id == seller.Id);
+            if (!hasAny) throw new NotFoundException("Seller ID not found.");
             try {
                 _context.Update(seller);
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException e) {
                 throw new DbConcurrencyException(e.Message);
