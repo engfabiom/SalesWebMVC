@@ -1,6 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Localization;
+using Microsoft.EntityFrameworkCore;
 using SalesWebMVC.Data;
 using SalesWebMVC.Services;
+using System.Globalization;
 namespace SalesWebMVC {
     public class Program {
         public static void Main(string[] args) {
@@ -21,6 +23,20 @@ namespace SalesWebMVC {
             builder.Services.AddControllersWithViews();
 
             var app = builder.Build();
+
+            // CultureInfo, Localization
+            // https://learn.microsoft.com/en-us/aspnet/core/fundamentals/localization/select-language-culture?view=aspnetcore-8.0
+            var ciList = new List<CultureInfo> {
+                new CultureInfo("en-US")
+                ,new CultureInfo("pt-BR")
+                ,new CultureInfo("ja-JP")
+            };
+            var localizationOptions = new RequestLocalizationOptions {
+                SupportedCultures = ciList,
+                SupportedUICultures = ciList,
+                DefaultRequestCulture = new RequestCulture(ciList[0])
+            };
+            app.UseRequestLocalization(localizationOptions);
 
             // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment()) {
