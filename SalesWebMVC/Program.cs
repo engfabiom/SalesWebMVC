@@ -27,9 +27,9 @@ namespace SalesWebMVC {
             // CultureInfo, Localization
             // https://learn.microsoft.com/en-us/aspnet/core/fundamentals/localization/select-language-culture?view=aspnetcore-8.0
             var ciList = new List<CultureInfo> {
-                new CultureInfo("en-US")
-                ,new CultureInfo("pt-BR")
-                ,new CultureInfo("ja-JP")
+                new("en-US")
+                ,new("pt-BR")
+                ,new("ja-JP")
             };
             var localizationOptions = new RequestLocalizationOptions {
                 SupportedCultures = ciList,

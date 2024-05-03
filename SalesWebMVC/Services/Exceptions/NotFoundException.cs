@@ -1,5 +1,4 @@
 ﻿namespace SalesWebMVC.Services.Exceptions {
-    public class NotFoundException : ApplicationException {
-        public NotFoundException(string message) : base(message) { }
+    public class NotFoundException(string message) : ApplicationException(message) {
     }
 }

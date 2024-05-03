@@ -2,6 +2,8 @@
 using Microsoft.EntityFrameworkCore;
 using SalesWebMVC.Data;
 using SalesWebMVC.Models;
+using SalesWebMVC.Models.ViewModels;
+using System.Diagnostics;
 
 namespace SalesWebMVC.Controllers {
     public class DepartmentsController : Controller {
@@ -110,17 +112,32 @@ namespace SalesWebMVC.Controllers {
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id) {
-            var department = await _context.Department.FindAsync(id);
-            if (department != null) {
-                _context.Department.Remove(department);
+            try {
+                var department = await _context.Department.FindAsync(id);
+                if (department != null) {
+                    _context.Department.Remove(department);
+                }
+
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            catch (DbUpdateException e) {
+                return RedirectToAction(nameof(Error), new { message = "Department cannot be deleted as there are Sellers registered." });
             }
 
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
         }
 
         private bool DepartmentExists(int id) {
             return _context.Department.Any(e => e.Id == id);
         }
+
+        public IActionResult Error(string message) {
+            ErrorViewModel errorViewModel = new() {
+                Message = message,
+                RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier
+            };
+            return View(errorViewModel);
+        }
+
     }
 }
