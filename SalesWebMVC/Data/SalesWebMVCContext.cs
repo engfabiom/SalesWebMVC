@@ -13,9 +13,9 @@ namespace SalesWebMVC.Data {
             modelBuilder.Entity<SalesRecord>().ToTable("SalesRecord");
 
             modelBuilder.Entity<SalesRecord>()
-            .HasOne(f => f.Seller)
-            .WithMany(p => p.Sales)
-            .OnDelete(DeleteBehavior.Restrict);
+                .HasOne(f => f.Seller)
+                .WithMany(p => p.Sales)
+                .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }
